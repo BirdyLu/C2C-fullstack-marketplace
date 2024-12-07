@@ -38,15 +38,15 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
     //db operations
     const {
-        username,
+        email,
         password
     } = req.body;
-    if (!username || !password) return res.status(401).json({message: "In this world, no important information should be left blank..."});
+    if (!email || !password) return res.status(401).json({message: "In this world, no important information should be left blank..."});
 
     try {
-        // check if user exists
+        // check if given email exists
         const user = await prisma.user.findUnique({
-            where: {username}
+            where: {email}
         });
         if (!user) return res.status(401).json({message: "Invalid credentials"});
 
@@ -54,7 +54,7 @@ export const login = async (req, res) => {
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) return res.status(401).json({message: "Invalid credentials"});
 
-        // generate cookie and send to user
+        // generate cookie
         // res.setHeader("Set-Cookie", "test=" + "myValue").json({message: "Congrats on passing Level 1!"}); // a JWT object
         const age = 1000 * 60 * 60 * 24 * 7; // 1 week
         const token = jwt.sign(
@@ -67,12 +67,15 @@ export const login = async (req, res) => {
             }
         );
 
+        const {password: userPassword, secretwish, ...userInfo} = user;
+
+        // send cookie
         res.cookie("token", token, {
             httpOnly: true, // client-side JS cannot access cookie
             // secure: true, // commented out for Localhost
             sameSite: 'strict',
             maxAge: age,
-        }).status(200).json({message: "Congrats on passing Level 1 ;)"});
+        }).status(200).json({userInfo});
 
     } catch(err) {
         console.log(err);
