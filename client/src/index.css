@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-form.sign-up-form input, form.sign-in-form input {
+form.sign-up-form input, form.sign-in-form input, form.update-profile-form input {
     outline: none;
     border: 1px solid; /* Sets the border width */
     border-color: #f97316; /* Equivalent to 'border-orange-400' */
@@ -10,7 +10,7 @@ form.sign-up-form input, form.sign-in-form input {
     padding: 0.75rem; /* Equivalent to 'p-3' */
 }
 
-form.sign-up-form, form.sign-in-form {
+form.sign-up-form, form.sign-in-form, form.update-profile-form {
     display: flex;                  /* Equivalent to 'flex' */
     flex-direction: column;         /* Equivalent to 'flex-col' */
     justify-content: flex-start;    /* Equivalent to 'justify-start' */

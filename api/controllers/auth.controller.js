@@ -36,7 +36,6 @@ export const register = async (req, res) => {
 }
 
 export const login = async (req, res) => {
-    //db operations
     const {
         email,
         password
@@ -56,14 +55,14 @@ export const login = async (req, res) => {
 
         // generate cookie
         // res.setHeader("Set-Cookie", "test=" + "myValue").json({message: "Congrats on passing Level 1!"}); // a JWT object
-        const age = 1000 * 60 * 60 * 24 * 7; // 1 week
-        const token = jwt.sign(
+        const age = 1000 * 60 * 60 * 24 * 7; // 1 week in milliseconds
+        const token = jwt.sign( // jwt (JSON Web Token). jwt.sign() for making unique signatures.
             {
                 id: user.id,
             }, 
             process.env.JWT_SECRET_KEY, 
             {
-                expiresIn: age
+                expiresIn: age/1000 // expiresIn accepts seconds
             }
         );
 
@@ -74,7 +73,7 @@ export const login = async (req, res) => {
             httpOnly: true, // client-side JS cannot access cookie
             // secure: true, // commented out for Localhost
             sameSite: 'strict',
-            maxAge: age,
+            maxAge: age, // maxAge accepts milliseconds
         }).status(200).json({userInfo});
 
     } catch(err) {
@@ -84,5 +83,6 @@ export const login = async (req, res) => {
 }
 
 export const logout = (req, res) => {
-    res.clearCookie("token").status(200).json({message: "Logout successful"});
+    res.clearCookie("token").status(200).json({message: "logged out successfully"});
+    
 }

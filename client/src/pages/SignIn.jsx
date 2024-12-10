@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import api_request from "../lib/apiRequest";
+import api_request from "../lib/apiRequest.js";
+import { AuthContext } from "../context/authContext.jsx";
 
 export default function SignIn(){
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState("");
+
+    const {updateUser} = useContext(AuthContext);
+
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -20,7 +24,7 @@ export default function SignIn(){
             const res = await api_request.post("/auth/login", {
                 email, password
             });
-            localStorage.setItem("user", JSON.stringify(res.data));
+            updateUser(res.data); // user data, or error message
 
             navigate("/profile");
         } catch(err) {
@@ -31,7 +35,7 @@ export default function SignIn(){
     };
 
     return (
-        <div className="sign-in-page fixed bg-[url('/background.png')] w-screen h-screen flex justify-center">
+        <div className="sign-in-page fixed bg-[url('/background.png')] w-screen min-h-screen flex justify-center">
             <div className="formContainer p-10 mt-20 lg:ml-10 lg:mt-24">
                 <form className="sign-in-form" onSubmit={handleSubmit}>
                     <h1 className="text-4xl font-bold flex justify-center mb-5">

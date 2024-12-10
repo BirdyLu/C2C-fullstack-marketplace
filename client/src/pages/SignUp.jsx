@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import api_request from "../lib/apiRequest";
+import api_request from "../lib/apiRequest.js";
 
 export default function SignUp(){
     const [error, setError] = useState("");
