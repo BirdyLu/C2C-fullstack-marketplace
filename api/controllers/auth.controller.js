@@ -65,6 +65,10 @@ export const login = async (req, res) => {
                 expiresIn: age/1000 // expiresIn accepts seconds
             }
         );
+        const expiresAt = Date.now() + age;
+        if (Date.now() > expiresAt) {
+            localStorage.clear();
+        }
 
         const {password: userPassword, secretwish, ...userInfo} = user;
 

@@ -3,6 +3,7 @@ import { AuthContext } from "../context/authContext";
 import { Link } from "react-router-dom";
 
 export default function Home(){
+    
 
     return (
         <>
@@ -19,6 +20,7 @@ export default function Home(){
                 <Link to={"/update-profile"} className="mr-3">
                     <button>Update Profile</button>
                 </Link>
+                
         </>
     );
 }

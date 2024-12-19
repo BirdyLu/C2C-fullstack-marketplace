@@ -12,9 +12,15 @@ export const AuthContextProvider = ({children}) => {
             return null;
         }
     });    
-
+    
     const updateUser = (data) => {
-        setCurrentUser(data);
+        setCurrentUser((prev) => ({
+            ...prev,              // Keep existing fields
+            userInfo: {
+                ...prev.userInfo, // Merge existing userInfo
+                ...data,          // Overwrite with new data
+            },
+        }));
     };
 
     useEffect(() => { //?

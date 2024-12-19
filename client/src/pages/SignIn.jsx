@@ -41,8 +41,8 @@ export default function SignIn(){
                     <h1 className="text-4xl font-bold flex justify-center mb-5">
                         Welcome back
                     </h1>
-                    <input name="email" type="text" placeholder="Email" />
-                    <input name="password" type="password" placeholder="Password" />
+                    <input name="email" type="text" placeholder="Email" defaultValue={"jianyilu2003@gmail.com"} />
+                    <input name="password" type="password" placeholder="Password" defaultValue={"xwenqiang"} />
                     <button disabled={isLoading}>
                         Log me in!
                     </button>

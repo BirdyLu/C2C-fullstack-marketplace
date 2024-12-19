@@ -1,33 +1,35 @@
 import React, { useContext, useState } from "react";
-import api_request from "../lib/apiRequest";
+import api_request from "../lib/apiRequest.js";
 import { AuthContext } from "../context/authContext";
 import { useNavigate } from "react-router-dom";
 
 export default function UpdateProfile() {
     const navigate = useNavigate();
     const { currentUser, updateUser } = useContext(AuthContext);
-    const [formData, setFormData] = useState({
-        username: currentUser?.userInfo?.username || "",
-        email: currentUser?.userInfo?.email || "",
-    });
+
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
+
+    // const formData = new FormData(e.target);
 
     if (!currentUser) {
         navigate("/sign-in"); // Redirect if not authenticated
         return null;
     }
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prevData) => ({ ...prevData, [name]: value }));
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const formData = new FormData(e.target);
+
+        // const { username, email, password } = Object.fromEntries(formData.entries());
+        const userID = currentUser?.userInfo?.id;
+        const {username, email} = Object.fromEntries(formData.entries());
+
         try {
-            const res = await api_request.post("/auth/update-profile", formData);
-            updateUser(res.data.updatedUser); // Update the context with the new user data
+            const res = await api_request.put(`/users/${userID}`, { username, email }); // must send JSON, not form-data
+
+            updateUser(res.data); // Update the context with the new user data
+
             setSuccess("Profile updated successfully!");
         } catch (err) {
             console.error(err);
@@ -61,8 +63,7 @@ export default function UpdateProfile() {
                         <input
                             type="text"
                             name="username"
-                            defaultValue={formData.username}
-                            onChange={handleChange}
+                            defaultValue={currentUser?.userInfo?.username}
                             placeholder="Enter your username"
                             required
                         />
@@ -75,8 +76,7 @@ export default function UpdateProfile() {
                         <input
                             type="email"
                             name="email"
-                            defaultValue={formData.email}
-                            onChange={handleChange}
+                            defaultValue={currentUser?.userInfo?.email}
                             placeholder="Enter your email"
                             required
                         />

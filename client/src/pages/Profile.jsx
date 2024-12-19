@@ -5,7 +5,7 @@ import { AuthContext } from "../context/authContext";
 
 export default function Profile(){
     const navigate = useNavigate();
-    const {currentUser, updateUser} = useContext(AuthContext);
+    const {currentUser, updateUser} = useContext(AuthContext); 
 
     const handleLogout = async (e) => {
         e.preventDefault();
@@ -38,6 +38,7 @@ export default function Profile(){
             <div className="user">
                 <img src={userAvatar} alt="" className="max-w-32"/>
                 <h1>{userName}</h1>
+                <p>{currentUser ? "true" : "false"}</p>
                 <h1>{userEmail}</h1>
             </div>
         </div>
